@@ -81,6 +81,8 @@
     <div class="container">
       <h1>Klik tombol di bawah ini untuk cek</h1>
       <button class="btn" onclick="getLocation()">Izinkan Lokasi</button>
+	  <p id="location">...</p>
+	  <p id="address">...</p>
     </div>
     <div></div>
     <!-- Container Baterai -->
@@ -105,8 +107,29 @@
         // Membuat link Google Maps dengan koordinat
         var gmapsLink = "https://www.google.com/maps?q=" + latitude + "," + longitude;
         // Membuka link di tab baru
-        window.open(gmapsLink, "_blank");
+       // window.open(gmapsLink, "_blank");
+	   console.log(latitude, longitude, gmapsLink)
+	   
+	   // Memanggil fungsi untuk mendapatkan alamat menggunakan Nominatim
+      getAddress(latitude, longitude);
       }
+	  
+	     // Fungsi untuk mendapatkan alamat dari koordinat menggunakan Nominatim (OpenStreetMap)
+    function getAddress(latitude, longitude) {
+      const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const address = data.display_name; // Mengambil alamat dari hasil respons
+          document.getElementById("address").innerHTML = `Alamat: ${address}`;
+        })
+        .catch(error => {
+          document.getElementById("address").innerHTML = "Terjadi kesalahan saat mengambil data.";
+          console.error("Error: ", error);
+        });
+    }
+	
       // Menampilkan pesan error jika gagal
       function showError(error) {
         switch (error.code) {
