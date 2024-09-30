@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Cek Lokasi</title>
+  <style>
+    /* Reset margin dan padding */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Atur tampilan untuk body */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #4A90E2, #50C878);
+      color: white;
+    }
+
+    /* Container utama */
+    .container {
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      max-width: 350px;
+      width: 90%;
+    }
+
+    /* Teks utama */
+    h1 {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    /* Tombol lokasi */
+    .location-btn {
+      background-color: #FF6347;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Efek hover pada tombol */
+    .location-btn:hover {
+      background-color: #FF4500;
+    }
+
+    /* Responsif untuk layar mobile */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.2em;
+      }
+
+      .location-btn {
+        font-size: 1em;
+        padding: 8px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Klik tombol di bawah ini untuk cek</h1>
+    <button class="location-btn" onclick="getLocation()">Izinkan Lokasi</button>
+  </div>
+
+  <script>
+    // Fungsi untuk cek lokasi
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        alert("Browser tidak support. Gunakan browser atau device lain.");
+      }
+    }
+
+    // Menampilkan lokasi dalam bentuk alert
+	function showPosition(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    
+    // Membuat link Google Maps dengan koordinat
+    var gmapsLink = "https://www.google.com/maps?q=" + latitude + "," + longitude;
+    
+    // Membuka link di tab baru
+    window.open(gmapsLink, "_blank");
+}
+
+
+    // Menampilkan pesan error jika gagal
+    function showError(error) {
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          alert("Izinkan lokasi untuk mempersipakan data harga terbaik untukmu.");
+          break;
+        case error.POSITION_UNAVAILABLE:
+          alert("daftar harga untuk lokasimu tidak tersedia.");
+          break;
+        case error.TIMEOUT:
+          alert("Terjadi kesalahan, silahkan refresh halaman dan muat ulang.");
+          break;
+        case error.UNKNOWN_ERROR:
+          alert("Terjadi kesalahan yang tidak diketahui, silahkan refresh halaman dan muat ulang.");
+          break;
+      }
+    }
+  </script>
+
+</body>
+</html>
